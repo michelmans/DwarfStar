@@ -23,19 +23,19 @@ commands:
 permissions:
   dwarfstar.admin:
     description: Admin permission
-    default: false
+    default: op
     
   dwarfstar.admin.create:
     description: Permission to create a recipe
-    default: false
+    default: op
   
   dwarfstar.admin.delete:
     description: Permission to delete a recipe
-    default: false
+    default: op
     
   dwarfstar.admin.edit:
     description: Permission to edit a recipe
-    default: false
+    default: op
 
   dwarfstar.smelt:
     description: Permission to smelt

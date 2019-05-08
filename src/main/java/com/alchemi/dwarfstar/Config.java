@@ -152,6 +152,21 @@ public class Config {
 		}
 	}
 	
+	public static void regenerateRecipes() {
+		config.set("enabledRecipes", null);
+		for (File file : main.RECIPES_FOLDER.listFiles()) {
+			if (file.getName().endsWith(".yml") && file.isFile()) {
+				file.delete();
+			}
+		}
+		recipes.clear();
+		try {
+			generateRecipes();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private static void generateRecipes() throws IOException {
 		
 		Iterator<Recipe> iter = Bukkit.recipeIterator();
@@ -163,7 +178,8 @@ public class Config {
 				SmeltRecipe rec = new SmeltRecipe(fr.getInput().getType(), fr.getExperience(), fr.getResult());
 				rec.setKey(fr.getKey().getKey().toLowerCase());
 				
-				if (fr.getInputChoice() instanceof MaterialChoice && ((MaterialChoice)fr.getInputChoice()).getChoices().size() > 1) {
+				if (fr.getInputChoice() instanceof MaterialChoice 
+						&& ((MaterialChoice)fr.getInputChoice()).getChoices().size() > 1) {
 					rec.setInput(((MaterialChoice)fr.getInputChoice()).getChoices());
 				}
 				

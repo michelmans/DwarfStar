@@ -20,7 +20,7 @@ public class main extends JavaPlugin {
 	public static File RECIPES_FOLDER;
 	
 	public static final int CONFIG_FILE_VERSION = 0;
-	public static final int MESSAGES_FILE_VERSION = 0;
+	public static final int MESSAGES_FILE_VERSION = 1;
 	
 	public static main instance;
 	

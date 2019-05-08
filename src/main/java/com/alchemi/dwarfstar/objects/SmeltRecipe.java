@@ -208,7 +208,7 @@ public class SmeltRecipe {
 	 * @param input the inputs to set
 	 */
 	public void setInput(List<Material> input) {
-		if (this.input.containsAll(input)) {
+		if (!this.input.containsAll(input)) {
 			this.input = input;
 			this.edited = true;
 			Config.removeRecipe(this);

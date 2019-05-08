@@ -1,39 +1,50 @@
 package com.alchemi.dwarfstar.objects.gui;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import com.alchemi.al.configurations.Messenger;
 import com.alchemi.al.objects.ItemFactory;
 import com.alchemi.al.objects.SexyRunnable;
 import com.alchemi.al.objects.GUI.GUIBase;
-import com.alchemi.al.objects.GUI.GUIListener2;
 import com.alchemi.dwarfstar.main;
 import com.alchemi.dwarfstar.objects.SmeltRecipe;
-import com.alchemi.dwarfstar.objects.events.ItemsEditEvent;
 
 public class EditItemsGUI extends GUIBase{
 
-	private final List<ItemStack> items;
-	private final UUID parent;
-	private final SmeltRecipe smeltRecipe;
+	protected final List<ItemStack> items;
+	protected final SmeltRecipe recipe;
+	protected final EDITTYPE type;
 	 
-	public EditItemsGUI(OfflinePlayer player, CommandSender sender, UUID parent, SmeltRecipe smeltRecipe, List<ItemStack> items) {
+	public EditItemsGUI(OfflinePlayer player, CommandSender sender, SmeltRecipe smeltRecipe, EDITTYPE type) {
 		super(main.instance, Messenger.cc("&1Item editing"), 27, player, sender);
-		new GUIListener2(plugin, this);
+		new CustomGUIListener(plugin, this);
 		
-		this.items = items;
-		this.parent = parent;
-		this.smeltRecipe = smeltRecipe;
+		this.type = type;
+		this.recipe = smeltRecipe;
+		
+		switch(type) {
+		case INPUT:
+			this.items = smeltRecipe.getInput().stream().map(Material -> new ItemStack(Material)).collect(Collectors.toList());
+			break;
+		case OUTPUT:
+			this.items = smeltRecipe.getOutput();
+			break;
+		default:
+			this.items = null;
+			break;
+		}
 		
 		setContents();
 		setCommands();
@@ -67,11 +78,15 @@ public class EditItemsGUI extends GUIBase{
 					&& !contents.get(i).isSimilar(new ItemFactory(Material.BLACK_STAINED_GLASS_PANE).setName("&1&oItem editing!"))) {
 				commands.put(i, new SexyRunnable() {
 					
+					@SuppressWarnings("unlikely-arg-type")
 					@Override
 					public void run(Object... args) {
 						
 						contents.remove((Integer)args[0]);
 						gui.setItem((Integer)args[0], null);
+						items.remove((Integer)args[0]);
+						commands.remove((Integer)args[0]);
+						arguments.remove((Integer)args[0]);
 						
 					}
 				});
@@ -86,13 +101,65 @@ public class EditItemsGUI extends GUIBase{
 	@Override
 	public void onClose() {
 		
-		new RecipeGUI(player, sender, smeltRecipe);
-		Bukkit.getPluginManager().callEvent(new ItemsEditEvent(parent, items, Arrays.asList(gui.getContents()).stream()
-				.filter(ItemStack -> ItemStack != null && !ItemStack.getType().equals(Material.BLACK_STAINED_GLASS_PANE))
-				.collect(Collectors.toList())));
+		switch(type) {
+		case INPUT:
+			recipe.setInput(items.stream().map(ItemStack::getType).collect(Collectors.toList()));
+			break;
+		case OUTPUT:
+			recipe.setOutput(items);
+			break;
+		}
+		new RecipeGUI(player, sender, recipe);
 		
 	}
-
 	
+	public void onOutsideClick(int slot, InventoryView view) {
+		
+		if (slot >= guiSize && 
+				!(view.getItem(slot) == null || view.getItem(slot).getType() == Material.AIR)) {
+			items.add(view.getItem(slot).clone());
+			System.out.println(items);
+			
+			int newSlot = gui.firstEmpty();
+			ItemStack item = new ItemFactory(view.getItem(slot).clone()).setLore(Arrays.asList("", "Click to remove"));
+			contents.put(newSlot, item);
+			gui.setItem(newSlot, item);
+			player.getPlayer().updateInventory();
+			commands.put(newSlot, new SexyRunnable() {
+					
+					@SuppressWarnings("unlikely-arg-type")
+					@Override
+					public void run(Object... args) {
+						
+						contents.remove((Integer)args[0]);
+						gui.setItem((Integer)args[0], null);
+						items.remove((Integer)args[0]);
+						commands.remove((Integer)args[0]);
+						arguments.remove((Integer)args[0]);
+						
+					}
+			});
+			
+			putArgument(newSlot, newSlot);
+		}
+		
+	}
+	
+	@Override
+	public void onClicked(int slot, Player pl, ClickType click)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+		super.onClicked(slot, pl, click);
+	}
+
+	/**
+	 * @return the type
+	 */
+	public EDITTYPE getType() {
+		return type;
+	}
+
+	public enum EDITTYPE{
+		INPUT, OUTPUT;
+	}
 	
 }

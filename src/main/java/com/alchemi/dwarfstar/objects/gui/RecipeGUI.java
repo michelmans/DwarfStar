@@ -2,16 +2,11 @@ package com.alchemi.dwarfstar.objects.gui;
 
 import java.util.Arrays;
 import java.util.ListIterator;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -22,7 +17,7 @@ import com.alchemi.al.objects.GUI.GUIBase;
 import com.alchemi.al.objects.GUI.GUIListener2;
 import com.alchemi.dwarfstar.main;
 import com.alchemi.dwarfstar.objects.SmeltRecipe;
-import com.alchemi.dwarfstar.objects.events.ItemsEditEvent;
+import com.alchemi.dwarfstar.objects.gui.EditItemsGUI.EDITTYPE;
 
 public class RecipeGUI extends GUIBase{
 
@@ -39,6 +34,8 @@ public class RecipeGUI extends GUIBase{
 		
 		this.recipe = recipe;
 		
+		main.messenger.broadcast(recipe.getOutput().toString());
+		
 		setContents();
 		setCommands();
 		openGUI(player.getPlayer());
@@ -49,14 +46,12 @@ public class RecipeGUI extends GUIBase{
 		
 		if (recipe.getInput().size() == 1) {
 			contents.put(2, new ItemFactory(recipe.getInput().get(0))
-					.setLore(Arrays.asList("Input items", "&6Click to edit")));
+					.setLore(Arrays.asList("&6Click to edit")).setName("&9Input items"));
 		} else {
 			contents.put(2, new ItemFactory(recipe.getInput().get(0))
-					.setLore(Arrays.asList("Input items", "&6Click to edit")));
+					.setLore(Arrays.asList("&6Click to edit")).setName("&9Input items"));
 			
 			iter = recipe.getInput().listIterator();
-			
-			System.out.println(recipe.getInput());
 			
 			task = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
 				
@@ -76,13 +71,20 @@ public class RecipeGUI extends GUIBase{
 		}
 		
 		contents.put(4, new ItemFactory(Material.COAL_BLOCK).setName(" "));
-		
-		if (recipe.getOutput().size() == 1) {
-			contents.put(6, new ItemFactory(recipe.getOutput().get(0))
-					.setLore(Arrays.asList("Output items", "&6Click to edit")));
+		if (recipe.getOutput().size() == 0) {
+			contents.put(6, new ItemFactory(Material.BARRIER)
+					.setLore(Arrays.asList("&6Click to edit")).setName("&9Output items"));
+		}
+		else if (recipe.getOutput().size() == 1) {
+			ItemStack out = recipe.getOutput().get(0);
+			if (out == null || out.equals(new ItemStack(Material.AIR))) {
+				out = new ItemStack(Material.BARRIER);
+			}
+			contents.put(6, new ItemFactory(out)
+					.setLore(Arrays.asList("&6Click to edit")).setName("&9Output items"));
 		} else {
 			contents.put(6, new ItemFactory(recipe.getOutput().get(0))
-					.setLore(Arrays.asList("Output items", "&6Click to edit")));
+					.setLore(Arrays.asList("&6Click to edit")).setName("&9Output items"));
 
 			iterV2 = recipe.getOutput().listIterator();
 			task2 = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
@@ -111,17 +113,14 @@ public class RecipeGUI extends GUIBase{
 
 	@Override
 	public void setCommands() {
-		final UUID id = GUIListener2.createUUID(guiName, player);
 		commands.put(2, new SexyRunnable() {
 			
 			@Override
 			public void run(Object... args) {
 				
 				player.getPlayer().closeInventory();
-				new EditItemsGUI(player, sender, id, recipe, recipe.getInput().stream()
-						.map(Material -> new ItemStack(Material))
-						.collect(Collectors.toList()));
-				new ItemsEditListener(id, EDITTYPE.INPUT);
+				new EditItemsGUI(player, sender, recipe, EDITTYPE.INPUT);
+				
 			}
 		});
 		
@@ -131,9 +130,7 @@ public class RecipeGUI extends GUIBase{
 			public void run(Object... args) {
 				
 				player.getPlayer().closeInventory();
-				new EditItemsGUI(player, sender, id, recipe, recipe.getOutput());
-				new ItemsEditListener(id, EDITTYPE.OUTPUT);
-				
+				new EditItemsGUI(player, sender, recipe, EDITTYPE.OUTPUT);
 				
 			}
 		});
@@ -144,45 +141,6 @@ public class RecipeGUI extends GUIBase{
 	public void onClose() {
 		if (task != null) task.cancel();
 		if (task2 != null) task2.cancel();
-	}
-	
-	protected enum EDITTYPE{
-		INPUT, OUTPUT;
-	}
-	
-	private class ItemsEditListener implements Listener {
-	
-		private final UUID parentID;
-		private final EDITTYPE type;
-		
-		public ItemsEditListener(UUID parentID, EDITTYPE type) {
-
-			this.parentID = parentID;
-			this.type = type;
-			
-			Bukkit.getPluginManager().registerEvents(this, plugin);
-			
-		}
-		
-		@EventHandler
-		public void onEdit(ItemsEditEvent e) {
-			if (e.getParent().equals(parentID)) {
-				
-				switch(type) {
-				case INPUT:
-					recipe.setInput(e.getNewItems().stream().map(ItemStack::getType).collect(Collectors.toList()));
-					HandlerList.unregisterAll(this);
-					break;
-				case OUTPUT:
-					recipe.setOutput(e.getNewItems());
-					HandlerList.unregisterAll(this);
-					break;
-				}
-				
-			}
-			
-		}
-		
 	}
 	
 }
