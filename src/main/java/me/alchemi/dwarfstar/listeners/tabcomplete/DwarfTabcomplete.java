@@ -33,6 +33,7 @@ public class DwarfTabcomplete implements TabCompleter{
 			list.add(DwarfCommand.modifyAliases.get(0));
 			list.add(DwarfCommand.defaultAliases.get(0));
 			list.add(DwarfCommand.listAliases.get(0));
+			list.add(DwarfCommand.reloadAliases.get(0));
 				
 		} else if (args.length == 2) {
 			

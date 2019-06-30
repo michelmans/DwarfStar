@@ -37,6 +37,7 @@ public class DwarfCommand implements CommandExecutor {
 	public static final List<String> modifyAliases = Arrays.asList("modify", "edit", "m", "mod", "e");
 	public static final List<String> defaultAliases = Arrays.asList("regenerate", "default", "defaults");
 	public static final List<String> listAliases = Arrays.asList("list", "listrecipes", "l", "lr");
+	public static final List<String> reloadAliases = Arrays.asList("reload", "r");
 	
 	final String createUsage = "&9/dwarfstar create <recipe_name>";
 	final String deleteUsage = "&9/dwarfstar delete <recipe_name>";
@@ -76,6 +77,8 @@ public class DwarfCommand implements CommandExecutor {
 					
 					list(sender, args);
 					
+				} else if (reloadAliases.contains(args[0])) {
+					main.getInstance().config.reload();
 				}
 			
 			} else {

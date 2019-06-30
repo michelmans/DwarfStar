@@ -383,4 +383,31 @@ public class Config extends ConfigBase{
 		};
 	}
 	
+	@Override
+	public void reload() {
+		super.reload();
+		
+		if (ConfigEnum.CONFIG.getConfig().contains("enabledRecipes") 
+				&& ConfigEnum.CONFIG.getConfig().getConfigurationSection("enabledRecipes") != null
+				&& !ConfigEnum.CONFIG.getConfig().getConfigurationSection("enabledRecipes").getValues(false).isEmpty()) 
+			for (String key : ConfigEnum.CONFIG.getConfig().getConfigurationSection("enabledRecipes").getValues(false).keySet()) {
+				if (ConfigEnum.CONFIG.getConfig().getBoolean("enabledRecipes." + key)) {
+					try {
+						SmeltRecipe.load(SexyConfiguration.loadConfiguration(new File(main.RECIPES_FOLDER, key + ".yml")));
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		
+		else {
+			main.getInstance().getMessenger().print("No recipes found! Generating...");
+			try {
+				generateRecipes();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }
