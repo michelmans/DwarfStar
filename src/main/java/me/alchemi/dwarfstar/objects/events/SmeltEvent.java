@@ -1,11 +1,11 @@
-package com.alchemi.dwarfstar.objects.events;
+package me.alchemi.dwarfstar.objects.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.alchemi.dwarfstar.objects.SmeltRecipe;
+import me.alchemi.dwarfstar.objects.SmeltRecipe;
 
 public class SmeltEvent extends Event implements Cancellable{
 

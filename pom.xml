@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.alchemi</groupId>
-  <artifactId>dwarfstar</artifactId>
-  <version>1.0.0</version>
-  <name>dwarfstar</name>
+  <groupId>me.alchemi</groupId>
+  <artifactId>DwarfStar</artifactId>
+  <version>1.1.0</version>
+  <name>DwarfStar</name>
   <description>"He wrapped my father in unbreakable chains forged in the heart of a dwarf star."
 A plugin made for LuukDMM, this plugin creates commands for smelting ores etc.</description>
   <build>
@@ -57,10 +57,15 @@ A plugin made for LuukDMM, this plugin creates commands for smelting ores etc.</
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.alchemi</groupId>
+      <groupId>me.alchemi</groupId>
       <artifactId>AlchemicLibrary</artifactId>
       <version>LATEST</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>me.alchemi</groupId>
+      <artifactId>AlchemicLibrary-api</artifactId>
+      <version>API</version>
     </dependency>
   </dependencies>
 </project>

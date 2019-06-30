@@ -1,0 +1,25 @@
+#Sets the default smelting type
+#Must be either HAND, INVENTORY or AMOUNT
+#Default: HAND
+default-smelt-type: HAND
+
+#Preferred request option
+#Must be either ANVIL, CHAT, BOOK or SIGN
+#Default: ANVIL
+request-option: ANVIL
+
+#Wether or not to enable the condenser command
+#Default: true
+enable-condenser: true
+
+Your:
+  Mother:
+  
+    #YOYOYOYO
+    Smels: true
+
+enabledRecipes: {}
+
+#Wether or not to check for updates
+#Default: true
+update-checker: true

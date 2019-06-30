@@ -1,2 +1,24 @@
 DwarfStar:
-  Tag: '&8{&6&oDwarfStar&8}'
+  Tag: '&6&oDwarfStar &8}}'
+  Header: '&9=====================&6&oDwarf Star&9====================='
+  
+  Molten: '&6Your items have been molten.'
+  No-Melting: '&cYou have no items to smelt.'
+  Condensed: '&6Your items have been condensed.'
+  No-Condensing: '&cYou have no items to condense.'
+  
+  Commands:
+    No-Permission: '&c&oYou don''t have permission to use &9$sender$&c.&r&c If you believe this is an error, &nplease contact an administrator.'
+    Wrong-Format: '&cPlease use: &9'
+    Unknown: '&cUnknown command. Use &9/dwarstar help &cfor more information.'
+    Recipe:
+      Created: '&6Recipe $name$ has been created.'
+      Deleted: '&6Recipe $name$ has been deleted.'
+      Error: '&4Could not create recipe $name$.'
+      No-Recipe-Name: '&cRecipe $name$ does not exist.'
+      No-Recipe-Material: '&cA recipe with $material$ does not exist.'
+      Bad-Name: '&cShot through the heart and you''re to blame.\n&cYou gave this recipe... &lA bad name.'
+      Material-Has-Recipe: '&cThere already is a recipe with this material.'
+      Disabled: '&cRecipe $name$ has been disabled.'
+      Enabled: '&6Recipe $name$ has been enabled.'
+    

@@ -1,7 +1,6 @@
 name: DwarfStar
-main: com.alchemi.dwarfstar.main
+main: me.alchemi.dwarfstar.main
 version: ${project.version}
-api-version: 1.13
 author: Alchemi
 description: "\"He wrapped my father in unbreakable chains forged in the heart of a dwarf star.\"\nA plugin made for LuukDMM, this plugin creates commands for smelting ores etc."
 depend: [AlchemicLibrary]
@@ -18,7 +17,6 @@ commands:
     aliases: [dwarfstar, dws]
     permission: dwarfstar.admin
     usage: /dwarfstar
-    
   
 permissions:
   dwarfstar.admin:
