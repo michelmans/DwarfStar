@@ -78,7 +78,9 @@ public class DwarfCommand implements CommandExecutor {
 					list(sender, args);
 					
 				} else if (reloadAliases.contains(args[0])) {
+					
 					main.getInstance().config.reload();
+					
 				}
 			
 			} else {
