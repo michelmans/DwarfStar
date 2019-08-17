@@ -11,7 +11,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.alchemi.dwarfstar.Config;
-import me.alchemi.dwarfstar.main;
+import me.alchemi.dwarfstar.Star;
 import me.alchemi.dwarfstar.listeners.command.DwarfCommand;
 
 public class DwarfTabcomplete implements TabCompleter{
@@ -47,7 +47,7 @@ public class DwarfTabcomplete implements TabCompleter{
 					list.add(key);
 				}
 			} else if (DwarfCommand.enableAliases.contains(args[0])) {
-				for (File file : main.RECIPES_FOLDER.listFiles()) {
+				for (File file : Star.RECIPES_FOLDER.listFiles()) {
 					String name = file.getName();
 					if (name.endsWith(".yml")) {
 						name = name.replace(".yml", "");

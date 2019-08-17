@@ -23,7 +23,7 @@ import me.alchemi.al.objects.handling.InputRequest.RequestOption;
 import me.alchemi.dwarfstar.Config;
 import me.alchemi.dwarfstar.Config.Messages;
 import me.alchemi.dwarfstar.Config.Options;
-import me.alchemi.dwarfstar.main;
+import me.alchemi.dwarfstar.Star;
 import me.alchemi.dwarfstar.objects.SmeltRecipe;
 import me.alchemi.dwarfstar.objects.SmeltRecipeBuilder;
 import me.alchemi.dwarfstar.objects.gui.RecipeGUI;
@@ -79,7 +79,7 @@ public class DwarfCommand implements CommandExecutor {
 					
 				} else if (reloadAliases.contains(args[0])) {
 					
-					main.getInstance().config.reload();
+					Star.getInstance().config.reload();
 					
 				}
 			
@@ -100,7 +100,7 @@ public class DwarfCommand implements CommandExecutor {
 					.input(new MaterialChoice(mainType));
 			if (args.length > 1) {
 				if (Config.hasRecipe(args[1]) || Config.hasRecipe(recipeBuilder.getKey())) {
-					new InputRequest(main.getInstance(), player, RequestOption.valueOf(Options.requestOption.asString()), Messages.COMMANDS_RECIPE_BAD_NAME.value());
+					new InputRequest(Star.getInstance(), player, RequestOption.valueOf(Options.requestOption.asString()), Messages.COMMANDS_RECIPE_BAD_NAME.value());
 					new InputListener(recipeBuilder, player);
 					return;
 				}
@@ -108,9 +108,9 @@ public class DwarfCommand implements CommandExecutor {
 			}
 			
 			if (Config.possibleMaterials().contains(mainType)) {
-				main.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_ERROR.value()
+				Star.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_ERROR.value()
 						.replace("$name$", recipeBuilder.getKey()), player);
-				main.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_MATERIAL_HAS_RECIPE.value(), player);
+				Star.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_MATERIAL_HAS_RECIPE.value(), player);
 				return;
 			}
 			new RecipeGUI(player, player, recipeBuilder);
@@ -121,20 +121,20 @@ public class DwarfCommand implements CommandExecutor {
 		if (args.length > 1) {
 			
 			try {
-				main.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_DELETED.value()
+				Star.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_DELETED.value()
 						.replace("$name$", Config.getRecipe(args[1]).delete().getKey()), sender);
 			} catch(IllegalArgumentException e) {
-				main.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
+				Star.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
 			}
 			
 		} else if (sender instanceof Player) {
 			Player player = (Player) sender;
 			
 			try{
-				main.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_DELETED.value()
+				Star.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_DELETED.value()
 						.replace("$name$", Config.getRecipe(player.getInventory().getItemInMainHand().getType()).delete().getKey()), sender);
 			} catch(IllegalArgumentException e) {
-				main.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
+				Star.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
 			}
 					
 				
@@ -146,10 +146,10 @@ public class DwarfCommand implements CommandExecutor {
 		if (args.length > 1) {
 			
 			try {
-				main.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_ENABLED.value()
+				Star.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_ENABLED.value()
 						.replace("$name$", SmeltRecipe.load(args[1]).getKey()), sender);
 			} catch(IllegalArgumentException e) {
-				main.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
+				Star.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
 			}
 			
 		}
@@ -160,20 +160,20 @@ public class DwarfCommand implements CommandExecutor {
 		if (args.length > 1) {
 			
 			try {
-				main.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_DISABLED.value()
+				Star.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_DISABLED.value()
 						.replace("$name$", Config.getRecipe(args[1]).unload().getKey()), sender);
 			} catch(IllegalArgumentException e) {
-				main.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
+				Star.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
 			}
 			
 		} else if (sender instanceof Player) {
 			Player player = (Player) sender;
 			
 			try{
-				main.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_DISABLED.value()
+				Star.getInstance().getMessenger().sendMessage(Messages.COMMANDS_RECIPE_DISABLED.value()
 						.replace("$name$", Config.getRecipe(player.getInventory().getItemInMainHand().getType()).unload().getKey()), sender);
 			} catch(IllegalArgumentException e) {
-				main.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
+				Star.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
 			}
 					
 				
@@ -190,7 +190,7 @@ public class DwarfCommand implements CommandExecutor {
 				new RecipeGUI(player, player, SmeltRecipeBuilder.fromRecipe(Config.getRecipe(args[1]).modify()));
 				
 			} catch(IllegalArgumentException e) {
-				main.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
+				Star.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
 			}
 			
 		} else {
@@ -198,7 +198,7 @@ public class DwarfCommand implements CommandExecutor {
 			try{
 				new RecipeGUI(player, player, SmeltRecipeBuilder.fromRecipe(Config.getRecipe(player.getInventory().getItemInMainHand().getType()).modify()));
 			} catch(IllegalArgumentException e) {
-				main.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
+				Star.getInstance().getMessenger().sendMessage(e.getMessage(), sender);
 			}
 					
 				
@@ -211,7 +211,7 @@ public class DwarfCommand implements CommandExecutor {
 	
 	private void list(CommandSender sender, String[] args) {
 		Player player = (Player) sender;
-		main.getInstance().getMessenger().sendMessages(player, Library.asSortedList(Config.getRecipeKeys()).toArray(new String[Config.getRecipeCount()]));
+		Star.getInstance().getMessenger().sendMessages(player, Library.asSortedList(Config.getRecipeKeys()).toArray(new String[Config.getRecipeCount()]));
 	}
 
 	private class InputListener implements Listener{
@@ -222,7 +222,7 @@ public class DwarfCommand implements CommandExecutor {
 		public InputListener(SmeltRecipeBuilder recipeBuilder, Player player) {
 			this.recipeBuilder = recipeBuilder;
 			this.player = player;
-			Bukkit.getPluginManager().registerEvents(this, main.getInstance());
+			Bukkit.getPluginManager().registerEvents(this, Star.getInstance());
 		}
 		
 		@EventHandler(priority = EventPriority.HIGHEST)

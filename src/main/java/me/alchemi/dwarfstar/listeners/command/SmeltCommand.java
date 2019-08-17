@@ -142,6 +142,7 @@ public class SmeltCommand implements CommandExecutor {
 			
 			int i = 0;
 			for (ItemStack item : player.getInventory().getContents()) {
+				if (item == null) continue;
 				Material itemType = MaterialWrapper.getFromItemStack(item);
 				if (!Arrays.asList(player.getInventory().getArmorContents()).contains(item) 
 						&& Config.hasRecipe(itemType)

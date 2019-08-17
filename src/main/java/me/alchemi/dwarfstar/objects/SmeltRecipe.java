@@ -19,7 +19,7 @@ import me.alchemi.al.configurations.SexyConfiguration;
 import me.alchemi.dwarfstar.Config;
 import me.alchemi.dwarfstar.Config.ConfigEnum;
 import me.alchemi.dwarfstar.Config.Messages;
-import me.alchemi.dwarfstar.main;
+import me.alchemi.dwarfstar.Star;
 
 public class SmeltRecipe {
 
@@ -49,7 +49,7 @@ public class SmeltRecipe {
 	public static SmeltRecipe load(String key) {
 		
 		try {
-			return load(SexyConfiguration.loadConfiguration(new File(main.RECIPES_FOLDER, key + ".yml")));
+			return load(SexyConfiguration.loadConfiguration(new File(Star.RECIPES_FOLDER, key + ".yml")));
 		} catch (Exception e) {
 			throw new IllegalArgumentException(Messenger.formatString(Messages.COMMANDS_RECIPE_NO_RECIPE_NAME.value()
 					.replace("$name$", key)));
@@ -75,7 +75,7 @@ public class SmeltRecipe {
 		} else out.add(config.getItemStack("output", new ItemStack(MaterialWrapper.AIR.getMaterial())));
 		
 		in.removeIf(ITEM -> ITEM == null || ITEM == MaterialWrapper.AIR.getMaterial());
-		out.removeIf(ITEM -> ITEM == null || ITEM.getType() == MaterialWrapper.AIR.getMaterial());
+		out.removeIf(ITEM -> ITEM == null || MaterialWrapper.getFromItemStack(ITEM) == MaterialWrapper.AIR.getMaterial());
 		
 		if (in.isEmpty() || out.isEmpty()) throw new IllegalStateException("The input or output cannot be empty. File = " + config.getFile().getName());
 		
@@ -101,7 +101,7 @@ public class SmeltRecipe {
 	
 	public void save() {
 		try {
-			SexyConfiguration config = SexyConfiguration.loadConfiguration(new File(main.RECIPES_FOLDER, getKey() + ".yml"));
+			SexyConfiguration config = SexyConfiguration.loadConfiguration(new File(Star.RECIPES_FOLDER, getKey() + ".yml"));
 			
 			if (input.size() > 1) {
 				List<String> strings = input.stream().map(Material::name).collect(Collectors.toList());
@@ -131,7 +131,7 @@ public class SmeltRecipe {
 		
 		unload();
 		ConfigEnum.CONFIG.getConfig().set("enabledRecipes." + getKey(), null);
-		File file = new File(main.RECIPES_FOLDER, getKey() + ".yml");
+		File file = new File(Star.RECIPES_FOLDER, getKey() + ".yml");
 		if (file.exists()) file.delete();
 		
 		return this;
@@ -147,7 +147,24 @@ public class SmeltRecipe {
 		
 		for (Material type : input) {
 			if (inv.contains(type, smeltXTimes)) {
-				inv.removeItem(new ItemStack(type, smeltXTimes));
+
+				int toSmelt = smeltXTimes;
+				for (ItemStack stack : inv.getContents()) {
+					
+					if (toSmelt == 0) break;
+					
+					else if (stack == null) continue;
+					
+					else if (stack.getType() == type) {
+						int index = inv.first(stack);
+						ItemStack newStack = stack.clone();
+						newStack.setAmount(stack.getAmount() - toSmelt);
+						inv.setItem(index, newStack);
+						toSmelt = 0;
+						player.updateInventory();
+					}
+				}
+				
 				for (ItemStack item : output) {
 					ItemStack cloner = item.clone();
 					cloner.setAmount(item.getAmount() * smeltXTimes);

@@ -31,7 +31,7 @@ import me.alchemi.dwarfstar.objects.SmeltRecipeBuilder;
 public class Config extends ConfigBase{
 
 	public Config() throws FileNotFoundException, IOException, InvalidConfigurationException {
-		super(main.getInstance());
+		super(Star.getInstance());
 		
 		if (ConfigEnum.CONFIG.getConfig().contains("enabledRecipes") 
 				&& ConfigEnum.CONFIG.getConfig().getConfigurationSection("enabledRecipes") != null
@@ -39,22 +39,24 @@ public class Config extends ConfigBase{
 			for (String key : ConfigEnum.CONFIG.getConfig().getConfigurationSection("enabledRecipes").getValues(false).keySet()) {
 				if (ConfigEnum.CONFIG.getConfig().getBoolean("enabledRecipes." + key)) {
 					try {
-						SmeltRecipe.load(SexyConfiguration.loadConfiguration(new File(main.RECIPES_FOLDER, key + ".yml")));
+						SmeltRecipe.load(SexyConfiguration.loadConfiguration(new File(Star.RECIPES_FOLDER, key + ".yml")));
 					} catch (IllegalStateException e) {
-						e.printStackTrace();
+						System.err.println(e.getMessage());
+					} catch (IllegalArgumentException e) {
+						System.err.println(e.getMessage() + "File = " + key + ".yml");
 					}
 				}
 			}
 		
 		else {
-			main.getInstance().getMessenger().print("No recipes found! Generating...");
+			Star.getInstance().getMessenger().print("No recipes found! Generating...");
 			generateRecipes();
 		}
 	}
 	
 	public static enum ConfigEnum implements IConfigEnum {
-		CONFIG(new File(main.getInstance().getDataFolder(), "config.yml"), 1),
-		MESSAGES(new File(main.getInstance().getDataFolder(), "messages.yml"), 5);
+		CONFIG(new File(Star.getInstance().getDataFolder(), "config.yml"), 1),
+		MESSAGES(new File(Star.getInstance().getDataFolder(), "messages.yml"), 5);
 		
 		final int version;
 		final File file;
@@ -153,6 +155,24 @@ public class Config extends ConfigBase{
 
 		@Override
 		public Material asMaterial() {
+			return null;
+		}
+
+		@Override
+		public double asDouble() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public List<Float> asFloatList() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public List<Integer> asIntList() {
+			// TODO Auto-generated method stub
 			return null;
 		}
 		
@@ -291,7 +311,7 @@ public class Config extends ConfigBase{
 	
 	public static void regenerateRecipes() {
 		ConfigEnum.CONFIG.getConfig().set("enabledRecipes", null);
-		for (File file : main.RECIPES_FOLDER.listFiles()) {
+		for (File file : Star.RECIPES_FOLDER.listFiles()) {
 			if (file.getName().endsWith(".yml") && file.isFile()) {
 				file.delete();
 			}
@@ -346,7 +366,7 @@ public class Config extends ConfigBase{
 				}
 			}
 		}
-		main.getInstance().getMessenger().print("Recipes Generated!");
+		Star.getInstance().getMessenger().print("Recipes Generated!");
 		ConfigEnum.CONFIG.getConfig().save();
 		
 		recipes.clear();
@@ -354,7 +374,7 @@ public class Config extends ConfigBase{
 		
 		for (String key : ConfigEnum.CONFIG.getConfig().getConfigurationSection("enabledRecipes").getValues(false).keySet()) {
 			if (ConfigEnum.CONFIG.getConfig().getBoolean("enabledRecipes." + key)) {
-				SmeltRecipe.load(SexyConfiguration.loadConfiguration(new File(main.RECIPES_FOLDER, key + ".yml")));
+				SmeltRecipe.load(SexyConfiguration.loadConfiguration(new File(Star.RECIPES_FOLDER, key + ".yml")));
 			}
 		}
 		
@@ -393,7 +413,7 @@ public class Config extends ConfigBase{
 			for (String key : ConfigEnum.CONFIG.getConfig().getConfigurationSection("enabledRecipes").getValues(false).keySet()) {
 				if (ConfigEnum.CONFIG.getConfig().getBoolean("enabledRecipes." + key)) {
 					try {
-						SmeltRecipe.load(SexyConfiguration.loadConfiguration(new File(main.RECIPES_FOLDER, key + ".yml")));
+						SmeltRecipe.load(SexyConfiguration.loadConfiguration(new File(Star.RECIPES_FOLDER, key + ".yml")));
 					} catch (IllegalStateException e) {
 						e.printStackTrace();
 					}
@@ -401,7 +421,7 @@ public class Config extends ConfigBase{
 			}
 		
 		else {
-			main.getInstance().getMessenger().print("No recipes found! Generating...");
+			Star.getInstance().getMessenger().print("No recipes found! Generating...");
 			try {
 				generateRecipes();
 			} catch (IOException e) {

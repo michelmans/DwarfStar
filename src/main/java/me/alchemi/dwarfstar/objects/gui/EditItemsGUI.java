@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -17,7 +18,7 @@ import me.alchemi.al.configurations.Messenger;
 import me.alchemi.al.objects.GUI.GUIBase;
 import me.alchemi.al.objects.handling.ItemFactory;
 import me.alchemi.al.objects.handling.SexyRunnable;
-import me.alchemi.dwarfstar.main;
+import me.alchemi.dwarfstar.Star;
 import me.alchemi.dwarfstar.objects.SmeltRecipeBuilder;
 
 public class EditItemsGUI extends GUIBase{
@@ -26,8 +27,8 @@ public class EditItemsGUI extends GUIBase{
 	protected SmeltRecipeBuilder recipeBuilder;
 	protected final EDITTYPE type;
 	 
-	public EditItemsGUI(Player player, Player sender, SmeltRecipeBuilder recipeBuilder, EDITTYPE type) {
-		super(main.getInstance(), Messenger.formatString("&1Item editing"), 27, player, sender);
+	public EditItemsGUI(OfflinePlayer player, Player sender, SmeltRecipeBuilder recipeBuilder, EDITTYPE type) {
+		super(Star.getInstance(), Messenger.formatString("&1Item editing"), 27, player, sender);
 		new CustomGUIListener(plugin, this);
 		
 		this.type = type;

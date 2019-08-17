@@ -13,12 +13,13 @@ import me.alchemi.dwarfstar.listeners.command.SmeltCommand;
 import me.alchemi.dwarfstar.listeners.event.MainListener;
 import me.alchemi.dwarfstar.listeners.tabcomplete.DwarfTabcomplete;
 import me.alchemi.dwarfstar.listeners.tabcomplete.SmeltTabcomplete;
+import me.alchemi.dwarfstar.objects.enchantments.AutoSmelt;
 
-public class main extends PluginBase {
+public class Star extends PluginBase {
 
 	public static File RECIPES_FOLDER;
 	
-	private static main instance;
+	private static Star instance;
 	
 	public Config config;
 	
@@ -43,6 +44,8 @@ public class main extends PluginBase {
 		
 		registerCommands();
 		
+		new AutoSmelt();
+		
 		Bukkit.getPluginManager().registerEvents(new MainListener(), this);
 		
 	}
@@ -58,7 +61,7 @@ public class main extends PluginBase {
 		getServer().getPluginCommand("dwarfstar").setTabCompleter(new DwarfTabcomplete());
 	}
 	
-	public static main getInstance() {
+	public static Star getInstance() {
 		return instance;
 	}
 	

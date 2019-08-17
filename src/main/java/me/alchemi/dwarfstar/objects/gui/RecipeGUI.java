@@ -5,6 +5,7 @@ import java.util.ListIterator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
@@ -15,7 +16,7 @@ import me.alchemi.al.objects.GUI.GUIBase;
 import me.alchemi.al.objects.GUI.GUIListener;
 import me.alchemi.al.objects.handling.ItemFactory;
 import me.alchemi.al.objects.handling.SexyRunnable;
-import me.alchemi.dwarfstar.main;
+import me.alchemi.dwarfstar.Star;
 import me.alchemi.dwarfstar.objects.SmeltRecipeBuilder;
 import me.alchemi.dwarfstar.objects.gui.EditItemsGUI.EDITTYPE;
 
@@ -30,8 +31,8 @@ public class RecipeGUI extends GUIBase{
 	
 	private boolean keepOpen = false;
 	
-	public RecipeGUI(Player player, Player sender, SmeltRecipeBuilder recipeBuilder) {
-		super(main.getInstance(), Messenger.formatString("&8Recipe: &9" + recipeBuilder.getKey()), 9, player, sender);
+	public RecipeGUI(OfflinePlayer player, Player sender, SmeltRecipeBuilder recipeBuilder) {
+		super(Star.getInstance(), Messenger.formatString("&8Recipe: &9" + recipeBuilder.getKey()), 9, player, sender);
 		new GUIListener(plugin, this);
 		
 		this.recipeBuilder = recipeBuilder;
