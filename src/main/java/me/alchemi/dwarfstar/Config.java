@@ -55,7 +55,7 @@ public class Config extends ConfigBase{
 	}
 	
 	public static enum ConfigEnum implements IConfigEnum {
-		CONFIG(new File(Star.getInstance().getDataFolder(), "config.yml"), 1),
+		CONFIG(new File(Star.getInstance().getDataFolder(), "config.yml"), 2),
 		MESSAGES(new File(Star.getInstance().getDataFolder(), "messages.yml"), 5);
 		
 		final int version;
@@ -89,10 +89,14 @@ public class Config extends ConfigBase{
 	private static Map<String, SmeltRecipe> recipesNames = new HashMap<String, SmeltRecipe>();
 	
 	public static enum Options implements IConfig {
-		defaultSmeltType("default-smelt-type"),
-		requestOption("request-option"),
-		enableCondenser("enable-condenser"),
-		updateChecker("update-checker");
+		DEFAULT_SMELT_TYPE("DwarfStar.default-smelt-type"),
+		REQUEST_OPTION("DwarfStar.request-option"),
+		ENABLE_CONDENSER("DwarfStar.enable-condenser"),
+		AUTOSMELT_APPLY_FORTUNE("DwarfStar.autosmelt.apply-fortune"),
+		AUTOSMELT_SOUND_EFFECT("DwarfStar.autosmelt.sound-effect"),
+		AUTOSMELT_PARTICLES("DwarfStar.autosmelt.particles"),
+		AUTOSMELT_CHANCE("DwarfStar.autosmelt.chance"),
+		UPDATE_CHECKER("DwarfStar.update-checker");
 
 		private final String key;
 		private Object value;
@@ -277,7 +281,7 @@ public class Config extends ConfigBase{
 		
 	}
 	
-	public static SmeltRecipe getRecipe(Material mat) {
+	public static SmeltRecipe getRecipe(Material mat) throws IllegalArgumentException {
 		try {
 			return recipes.entrySet().parallelStream().filter(Entry -> Entry.getKey().contains(mat)).collect(Collectors.toList()).get(0).getValue();
 		} catch (Exception e) {
@@ -286,7 +290,7 @@ public class Config extends ConfigBase{
 		}
 	}
 	
-	public static SmeltRecipe getRecipe(String key) {
+	public static SmeltRecipe getRecipe(String key)  throws IllegalArgumentException {
 		if (recipesNames.containsKey(key)) {
 			return recipesNames.get(key);
 		} else {

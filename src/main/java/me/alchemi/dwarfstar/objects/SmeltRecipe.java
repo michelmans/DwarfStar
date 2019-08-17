@@ -4,9 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.block.Block;
+import org.bukkit.enchantments.EnchantmentWrapper;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -19,6 +27,7 @@ import me.alchemi.al.configurations.SexyConfiguration;
 import me.alchemi.dwarfstar.Config;
 import me.alchemi.dwarfstar.Config.ConfigEnum;
 import me.alchemi.dwarfstar.Config.Messages;
+import me.alchemi.dwarfstar.Config.Options;
 import me.alchemi.dwarfstar.Star;
 
 public class SmeltRecipe {
@@ -136,6 +145,53 @@ public class SmeltRecipe {
 		
 		return this;
 		
+	}
+	
+	public void smeltPlayerless(Block block, ItemStack tool) {
+
+		for (Material type : input) {
+			if (type == block.getType()) {
+				
+				int fortune = 1;
+				
+				if (Options.AUTOSMELT_APPLY_FORTUNE.asBoolean()
+						&& tool.containsEnchantment(EnchantmentWrapper.LOOT_BONUS_BLOCKS)) {
+					
+					int level = tool.getEnchantmentLevel(EnchantmentWrapper.LOOT_BONUS_BLOCKS);
+					double chance = 1.0/(level + 2) * 10000;
+
+					int nextInt = new Random().nextInt(10000);
+					
+					for (int l = 1; l <= level + 1; l++) {
+						if (nextInt <= chance * l) {
+							fortune = l + 1;
+							break;
+						}
+					}
+				}
+				
+				for (ItemStack item : output) {
+					ItemStack cloner = item.clone();
+					cloner.setAmount(item.getAmount() * fortune);
+					block.getWorld().dropItemNaturally(block.getLocation(), cloner);;
+				}
+				dropExp(block.getLocation());
+				effects(block.getLocation());
+			}
+		}
+		
+	}
+	
+	public void effects(Location location) {
+		if (Options.AUTOSMELT_PARTICLES.asBoolean()) location.getWorld().spawnParticle(Particle.FLAME, location.add(0.5, 0.5, 0.5), 10, 0.4, 0.4, 0.4, 0.01);
+		if (Options.AUTOSMELT_SOUND_EFFECT.asBoolean()) location.getWorld().playEffect(location, Effect.EXTINGUISH, 0);
+	}
+	
+	public void dropExp(Location location) {
+		if (xp == 0.0) return; 
+		
+		ExperienceOrb orb = (ExperienceOrb) location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
+		orb.setExperience(Math.round(xp));
 	}
 	
 	public void smelt(Player player) { smelt(player, 1); }

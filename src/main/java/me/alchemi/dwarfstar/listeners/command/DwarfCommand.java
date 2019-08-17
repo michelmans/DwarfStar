@@ -100,7 +100,7 @@ public class DwarfCommand implements CommandExecutor {
 					.input(new MaterialChoice(mainType));
 			if (args.length > 1) {
 				if (Config.hasRecipe(args[1]) || Config.hasRecipe(recipeBuilder.getKey())) {
-					new InputRequest(Star.getInstance(), player, RequestOption.valueOf(Options.requestOption.asString()), Messages.COMMANDS_RECIPE_BAD_NAME.value());
+					new InputRequest(Star.getInstance(), player, RequestOption.valueOf(Options.REQUEST_OPTION.asString()), Messages.COMMANDS_RECIPE_BAD_NAME.value());
 					new InputListener(recipeBuilder, player);
 					return;
 				}

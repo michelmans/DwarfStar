@@ -107,7 +107,7 @@ public class SmeltCommand implements CommandExecutor {
 					}
 				} else if (args.length == 0) {
 					
-					process(PROCESSTYPE.valueOf(Options.defaultSmeltType.asString()), player);
+					process(PROCESSTYPE.valueOf(Options.DEFAULT_SMELT_TYPE.asString()), player);
 					
 					return true;
 				}

@@ -1,25 +1,40 @@
-#Sets the default smelting type
-#Must be either HAND, INVENTORY or AMOUNT
-#Default: HAND
-default-smelt-type: HAND
+DwarfStar:
 
-#Preferred request option
-#Must be either ANVIL, CHAT, BOOK or SIGN
-#Default: ANVIL
-request-option: ANVIL
-
-#Wether or not to enable the condenser command
-#Default: true
-enable-condenser: true
-
-Your:
-  Mother:
-  
-    #YOYOYOYO
-    Smels: true
-
-enabledRecipes: {}
-
-#Wether or not to check for updates
-#Default: true
-update-checker: true
+   #Sets the default smelting type
+   #Must be either HAND, INVENTORY or AMOUNT
+   #Default: HAND
+   default-smelt-type: HAND
+   
+   #Preferred request option
+   #Must be either ANVIL, CHAT, BOOK or SIGN
+   #Default: ANVIL
+   request-option: ANVIL
+   
+   #Wether or not to enable the condenser command
+   #Default: true
+   enable-condenser: true
+   
+   autosmelt:
+   
+      #Wether or not to apply the fortune enchantment on tools with autosmelt.
+      #Default: true
+      apply-fortune: true
+      
+      #Wether or not to play the sound effect when autosmelt is used.
+      #Default: true
+      sound-effect: true
+      
+      #Wether or not to display particles when autosmelt is used.
+      #Default: true
+      particles: true
+      
+      #The chance of getting the enchantment from an enchantment table.
+      #Set to zero to make enchantment only available from books etc.
+      #Default: 10
+      chance: 10
+   
+   #Wether or not to check for updates
+   #Default: true
+   update-checker: true
+   
+   enabledRecipes: {}

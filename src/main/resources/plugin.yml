@@ -3,39 +3,42 @@ main: me.alchemi.dwarfstar.Star
 version: ${project.version}
 api-version: 1.13
 author: Alchemi
-description: "\"He wrapped my father in unbreakable chains forged in the heart of a dwarf star.\"\nA plugin made for LuukDMM, this plugin creates commands for smelting ores etc."
-depend: [AlchemicLibrary]
-
+description: |-
+   "He wrapped my father in unbreakable chains forged in the heart of a dwarf star."
+   A plugin made for LuukDMM, this plugin creates commands for smelting ores etc.
+depend:
+- AlchemicLibrary
 commands:
-  smelter:
-    description: Smelt stuff!
-    aliases: [smelter, smelt]
-    permission: dwarfstar.smelt
-    usage: /smelt [hand|inventory|amount]
-  
-  dwarfstar:
-    description: DwarfStar base command
-    aliases: [dwarfstar, dws]
-    permission: dwarfstar.admin
-    usage: /dwarfstar
-  
+   smelter:
+      description: Smelt stuff!
+      aliases:
+      - smelter
+      - smelt
+      permission: dwarfstar.smelt
+      usage: /smelt [hand|inventory|amount]
+   dwarfstar:
+      description: DwarfStar base command
+      aliases:
+      - dwarfstar
+      - dws
+      permission: dwarfstar.admin
+      usage: /dwarfstar
 permissions:
-  dwarfstar.admin:
-    description: Admin permission
-    default: op
-    
-  dwarfstar.admin.create:
-    description: Permission to create a recipe
-    default: op
-  
-  dwarfstar.admin.delete:
-    description: Permission to delete a recipe
-    default: op
-    
-  dwarfstar.admin.edit:
-    description: Permission to edit a recipe
-    default: op
-
-  dwarfstar.smelt:
-    description: Permission to smelt
-    default: true
+   dwarfstar.admin:
+      description: Admin permission
+      default: op
+   dwarfstar.admin.create:
+      description: Permission to create a recipe
+      default: op
+   dwarfstar.admin.delete:
+      description: Permission to delete a recipe
+      default: op
+   dwarfstar.admin.edit:
+      description: Permission to edit a recipe
+      default: op
+   dwarfstar.smelt:
+      description: Permission to smelt
+      default: true
+   dwarfstar.smelt.enchantment:
+      description: Permission to get the smelt enchantment
+      default: true
