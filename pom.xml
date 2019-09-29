@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.alchemi</groupId>
   <artifactId>DwarfStar</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.1</version>
   <name>DwarfStar</name>
   <description>"He wrapped my father in unbreakable chains forged in the heart of a dwarf star."
 A plugin made for LuukDMM, this plugin creates commands for smelting ores etc.</description>

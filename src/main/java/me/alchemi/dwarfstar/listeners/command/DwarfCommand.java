@@ -92,7 +92,7 @@ public class DwarfCommand implements CommandExecutor {
 	
 	private void create(CommandSender sender, String[] args) {
 		Player player = (Player) sender;
-		Material mainType = MaterialWrapper.getFromItemStack(player.getInventory().getItemInMainHand());
+		Material mainType = MaterialWrapper.getWrapper(player.getInventory().getItemInMainHand());
 		
 		if (mainType != null
 				&& mainType != Material.AIR) {

@@ -127,7 +127,7 @@ public class SmeltCommand implements CommandExecutor {
 		if (type.equals(PROCESSTYPE.HAND)) {
 			
 			ItemStack hand = player.getInventory().getItemInMainHand();
-			Material itemType = MaterialWrapper.getFromItemStack(hand);
+			Material itemType = MaterialWrapper.getWrapper(hand);
 			
 			if (Config.hasRecipe(itemType)
 					&& (in == null || in.getMaterialList().contains(itemType))
@@ -143,7 +143,7 @@ public class SmeltCommand implements CommandExecutor {
 			int i = 0;
 			for (ItemStack item : player.getInventory().getContents()) {
 				if (item == null) continue;
-				Material itemType = MaterialWrapper.getFromItemStack(item);
+				Material itemType = MaterialWrapper.getWrapper(item);
 				if (!Arrays.asList(player.getInventory().getArmorContents()).contains(item) 
 						&& Config.hasRecipe(itemType)
 						&& (in == null || in.getMaterialList().contains(itemType))
@@ -160,7 +160,7 @@ public class SmeltCommand implements CommandExecutor {
 		} else if (type.equals(PROCESSTYPE.AMOUNT)) {
 			
 			ItemStack hand = player.getInventory().getItemInMainHand().clone();
-			Material itemType = MaterialWrapper.getFromItemStack(hand);
+			Material itemType = MaterialWrapper.getWrapper(hand);
 			
 			if (Config.hasRecipe(itemType) 
 					&& player.getInventory().contains(itemType, amount)

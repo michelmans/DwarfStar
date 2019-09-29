@@ -84,7 +84,7 @@ public class SmeltRecipe {
 		} else out.add(config.getItemStack("output", new ItemStack(MaterialWrapper.AIR.getMaterial())));
 		
 		in.removeIf(ITEM -> ITEM == null || ITEM == MaterialWrapper.AIR.getMaterial());
-		out.removeIf(ITEM -> ITEM == null || MaterialWrapper.getFromItemStack(ITEM) == MaterialWrapper.AIR.getMaterial());
+		out.removeIf(ITEM -> ITEM == null || MaterialWrapper.getWrapper(ITEM) == MaterialWrapper.AIR.getMaterial());
 		
 		if (in.isEmpty() || out.isEmpty()) throw new IllegalStateException("The input or output cannot be empty. File = " + config.getFile().getName());
 		

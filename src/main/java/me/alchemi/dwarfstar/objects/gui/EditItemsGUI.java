@@ -57,7 +57,6 @@ public class EditItemsGUI extends GUIBase{
 		
 		contents.clear();
 		Iterator<ItemStack> iter = items.iterator();
-		System.out.println(items);
 		for (int i = 0; i < guiSize; i++) {
 			
 			if (!contents.containsKey(i) && iter.hasNext()) contents.put(i, new ItemFactory(iter.next()).setLore(Arrays.asList("", "Click to remove")));
@@ -100,7 +99,7 @@ public class EditItemsGUI extends GUIBase{
 		switch(type) {
 		case INPUT:
 			recipeBuilder.input(new MaterialChoice(items.stream()
-					.map(ItemStack -> MaterialWrapper.getFromItemStack(ItemStack))
+					.map(ItemStack -> MaterialWrapper.getWrapper(ItemStack))
 					.collect(Collectors.toList())));
 			break;
 		case OUTPUT:
